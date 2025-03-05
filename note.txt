@@ -14,14 +14,6 @@ PATCH /api/contacts/id
 DELETE /api/contacts/:id
 
 
---------------------------------------------------------------------------------
 
 
-  {
-    "_id": "67c75f51914899bf735d39c2",
-    "firstName": "Emily",
-    "lastName": "Johnson",
-    "email": "emily.johnson@example.com",
-    "favoriteColor": "Purple",
-    "birthday": "1985-12-22T00:00:00.000Z"
-  }
+ 

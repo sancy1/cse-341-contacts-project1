@@ -1,9 +1,5 @@
-/**
- * Contacts API - Server File
- * This file sets up the Express server, connects to MongoDB, and defines the API routes.
- */
 const express = require('express');
-const connectDB = require('./db/connect'); // Correct import path
+const connectDB = require('./db/connect'); 
 const routes = require('./routes');
 const swaggerSetup = require('./swagger/swagger');
 require('dotenv').config();
