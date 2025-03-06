@@ -1,8 +1,42 @@
 const Contact = require('../models/Contact');
 
+// I added this Helper function to validate request body
+const validateRequestBody = (req, res, requiredFields = []) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({
+      message: "Request body cannot be empty!",
+      example: {
+        firstName: "San",
+        lastName: "Ceey",
+        email: "san.ceey@example.com",
+        favoriteColor: "Blue",
+        birthday: "1990-01-01"
+      }
+    });
+  }
 
+  if (requiredFields.length > 0) {
+    const missingFields = requiredFields.filter(field => !req.body[field]);
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        message: `Missing required fields: ${missingFields.join(', ')}`,
+        example: {
+          firstName: "San",
+          lastName: "Ceey",
+          email: "san.ceey@example.com",
+          favoriteColor: "Blue",
+          birthday: "1990-01-01"
+        }
+      });
+    }
+  }
+
+  return null;
+};
+
+// ---------------------------------------------------------------------
 /**
- * Get all contacts ---------------------------------------------------------------------
+ * Get all contacts
  * @route GET /api/contacts
  * @returns {Object[]} contacts - List of all contacts.
  */
@@ -15,9 +49,9 @@ const getAllContacts = async (req, res) => {
   }
 };
 
-
+// ---------------------------------------------------------------------
 /**
- * Get a single contact by ID ---------------------------------------------------------------------
+ * Get a single contact by ID
  * @route GET /api/contacts/:id
  * @param {string} id - The ID of the contact to retrieve.
  * @returns {Object} contact - The contact object.
@@ -34,9 +68,9 @@ const getContactById = async (req, res) => {
   }
 };
 
-
+// ---------------------------------------------------------------------
 /**
- * Create a new contact ---------------------------------------------------------------------
+ * Create a new contact
  * @route POST /api/contacts
  * @param {Object} body - The contact data to create.
  * @param {string} body.firstName - The first name of the contact.
@@ -47,6 +81,9 @@ const getContactById = async (req, res) => {
  * @returns {Object} contact - The newly created contact object.
  */
 const createContact = async (req, res) => {
+  const validationError = validateRequestBody(req, res, ['firstName', 'lastName', 'email']);
+  if (validationError) return validationError;
+
   try {
     const { firstName, lastName, email, favoriteColor, birthday } = req.body;
     const newContact = new Contact({ firstName, lastName, email, favoriteColor, birthday });
@@ -57,9 +94,9 @@ const createContact = async (req, res) => {
   }
 };
 
-
+// ---------------------------------------------------------------------
 /**
- * Update a contact by ID ---------------------------------------------------------------------
+ * Update a contact by ID
  * @route PUT /api/contacts/:id
  * @param {string} id - The ID of the contact to update.
  * @param {Object} body - The updated contact data.
@@ -71,6 +108,9 @@ const createContact = async (req, res) => {
  * @returns {Object} contact - The updated contact object.
  */
 const updateContact = async (req, res) => {
+  const validationError = validateRequestBody(req, res);
+  if (validationError) return validationError;
+
   try {
     const { id } = req.params;
     const updatedContact = await Contact.findByIdAndUpdate(id, req.body, { new: true });
@@ -83,9 +123,9 @@ const updateContact = async (req, res) => {
   }
 };
 
-
+// ---------------------------------------------------------------------
 /**
- * Delete a contact by ID ---------------------------------------------------------------------
+ * Delete a contact by ID
  * @route DELETE /api/contacts/:id
  * @param {string} id - The ID of the contact to delete.
  * @returns {Object} message - A success message.
@@ -103,14 +143,17 @@ const deleteContact = async (req, res) => {
   }
 };
 
-
+// ---------------------------------------------------------------------
 /**
- * Partially update a contact by ID ---------------------------------------------------------------------
+ * Partially update a contact by ID
  * @param {string} id - The ID of the contact to update
  * @param {Object} req.body - The fields to update
  * @returns {Object} The updated contact
  */
 const patchContact = async (req, res) => {
+  const validationError = validateRequestBody(req, res);
+  if (validationError) return validationError;
+
   try {
     const { id } = req.params;
     const updates = req.body;
@@ -127,7 +170,6 @@ const patchContact = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
 
 // Export 
 module.exports = {
