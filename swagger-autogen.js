@@ -20,8 +20,8 @@ const doc = {
   ],
 };
 
-const outputFile = './swagger-output.json'; // Output file for Swagger documentation
-const endpointsFiles = ['./routes/contact.js']; // Path to your route files
+const outputFile = './swagger-output.json'; 
+const endpointsFiles = ['./routes/contact.js'];
 
 // Run swagger-autogen
 swaggerAutogen(outputFile, endpointsFiles, doc);
