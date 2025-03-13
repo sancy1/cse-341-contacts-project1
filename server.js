@@ -14,6 +14,9 @@ app.use(express.json());
 // Enable CORS for all routes
 app.use(cors());
 
+// Handle preflight requests for all routes
+app.options("*", cors());
+
 // Connect to MongoDB
 connectDB();
 
