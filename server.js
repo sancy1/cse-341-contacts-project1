@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const connectDB = require("./db/connect");
 const routes = require("./routes");
 const swaggerSetup = require("./swagger/swagger");
@@ -9,6 +10,9 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Enable CORS for all routes
+app.use(cors());
 
 // Connect to MongoDB
 connectDB();
