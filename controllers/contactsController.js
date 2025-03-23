@@ -1,182 +1,268 @@
-const Contact = require('../models/Contact');
+// const asyncHandler = require("express-async-handler");
+// const contactService = require("../services/contactService");
 
-// I added this Helper function to validate request body
-const validateRequestBody = (req, res, requiredFields = []) => {
-  if (!req.body || Object.keys(req.body).length === 0) {
-    return res.status(400).json({
-      message: "Request body cannot be empty!",
-      example: {
-        firstName: "San",
-        lastName: "Ceey",
-        email: "san.ceey@example.com",
-        favoriteColor: "Blue",
-        birthday: "1990-01-01"
-      }
-    });
+// // Get all contacts
+// const getAllContacts = asyncHandler(async (req, res) => {
+//   const contacts = await contactService.getAllContacts();
+//   res.status(200).json(contacts);
+// });
+
+// // Get a contact by ID
+// const getContactById = asyncHandler(async (req, res) => {
+//   const contact = await contactService.getContactById(req.params.id);
+//   if (!contact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json(contact);
+// });
+
+// // Create a new contact
+// const createContact = asyncHandler(async (req, res) => {
+//   const newContact = await contactService.createContact(req.body);
+//   res.status(201).json(newContact);
+// });
+
+// // Update a contact (PUT)
+// const updateContact = asyncHandler(async (req, res) => {
+//   const updatedContact = await contactService.updateContact(req.params.id, req.body);
+//   if (!updatedContact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json(updatedContact);
+// });
+
+// // Partially update a contact (PATCH) - No validation applied
+// const patchContact = asyncHandler(async (req, res) => {
+//   const updatedContact = await contactService.updateContact(req.params.id, req.body);
+//   if (!updatedContact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json(updatedContact);
+// });
+
+// // Delete a contact
+// const deleteContact = asyncHandler(async (req, res) => {
+//   const deletedContact = await contactService.deleteContact(req.params.id);
+//   if (!deletedContact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json({ message: "Contact deleted successfully" });
+// });
+
+// module.exports = {
+//   getAllContacts,
+//   getContactById,
+//   createContact,
+//   updateContact,
+//   deleteContact,
+//   patchContact,
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const asyncHandler = require("express-async-handler");
+// const contactService = require("../services/contactService");
+
+// // Get all contacts for the authenticated user
+// const getAllContacts = asyncHandler(async (req, res) => {
+//   const userId = req.user._id; // Authenticated user's ID
+//   const contacts = await contactService.getAllContacts(userId);
+//   res.status(200).json(contacts);
+// });
+
+// // Get a contact by ID for the authenticated user
+// const getContactById = asyncHandler(async (req, res) => {
+//   const userId = req.user._id; // Authenticated user's ID
+//   const contact = await contactService.getContactById(req.params.id, userId);
+//   if (!contact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json(contact);
+// });
+
+
+
+// // Create a new contact for the authenticated user
+// const createContact = asyncHandler(async (req, res) => {
+//   console.log("User in request:", req.user); // Debugging
+
+//   const userId = req.user.userId; // Use correct key
+//   if (!userId) {
+//     return res.status(401).json({ message: "Unauthorized: User not found" });
+//   }
+
+//   const contactData = { ...req.body, user: userId }; // Assign user ID
+//   console.log("Contact Data:", contactData); // Debugging
+
+//   const newContact = await contactService.createContact(contactData);
+//   res.status(201).json(newContact);
+// });
+
+
+// // Update a contact (PUT) for the authenticated user
+// const updateContact = asyncHandler(async (req, res) => {
+//   const userId = req.user._id; // Authenticated user's ID
+//   const updatedContact = await contactService.updateContact(req.params.id, req.body, userId);
+//   if (!updatedContact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json(updatedContact);
+// });
+
+// // Partially update a contact (PATCH) for the authenticated user
+// const patchContact = asyncHandler(async (req, res) => {
+//   const userId = req.user._id; // Authenticated user's ID
+//   const updatedContact = await contactService.patchContact(req.params.id, req.body, userId); // Use patchContact instead of updateContact
+//   if (!updatedContact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json(updatedContact);
+// });
+
+// // Delete a contact for the authenticated user
+// const deleteContact = asyncHandler(async (req, res) => {
+//   const userId = req.user._id; // Authenticated user's ID
+//   const deletedContact = await contactService.deleteContact(req.params.id, userId);
+//   if (!deletedContact) {
+//     res.status(404);
+//     throw new Error("Contact not found");
+//   }
+//   res.status(200).json({ message: "Contact deleted successfully" });
+// });
+
+// module.exports = {
+//   getAllContacts,
+//   getContactById,
+//   createContact,
+//   updateContact,
+//   patchContact,
+//   deleteContact,
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const mongoose = require('mongoose'); 
+const asyncHandler = require("express-async-handler");
+const contactService = require("../services/contactService");
+
+// Get all contacts for the authenticated user
+const getAllContacts = asyncHandler(async (req, res) => {
+  const userId = req.user.userId; // Use correct key
+  const contacts = await contactService.getAllContacts(userId);
+  res.status(200).json(contacts);
+});
+
+// Get a contact by ID for the authenticated user
+const getContactById = asyncHandler(async (req, res) => {
+  const userId = req.user.userId; // Use correct key
+  const contact = await contactService.getContactById(req.params.id, userId);
+  if (!contact) {
+    res.status(404);
+    throw new Error("Contact not found");
+  }
+  res.status(200).json(contact);
+});
+
+// Create a new contact for the authenticated user
+const createContact = asyncHandler(async (req, res) => {
+  console.log("User in request:", req.user); // Debugging
+
+  const userId = req.user.userId; // Use correct key
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized: User not found" });
   }
 
-  if (requiredFields.length > 0) {
-    const missingFields = requiredFields.filter(field => !req.body[field]);
-    if (missingFields.length > 0) {
-      return res.status(400).json({
-        message: `Missing required fields: ${missingFields.join(', ')}`,
-        example: {
-          firstName: "San",
-          lastName: "Ceey",
-          email: "san.ceey@example.com",
-          favoriteColor: "Blue",
-          birthday: "1990-01-01"
-        }
-      });
-    }
+  const contactData = { ...req.body, user: userId }; // Assign user ID
+  console.log("Contact Data:", contactData); // Debugging
+
+  const newContact = await contactService.createContact(contactData);
+  res.status(201).json(newContact);
+});
+
+// Update a contact (PUT) for the authenticated user
+const updateContact = asyncHandler(async (req, res) => {
+  const userId = req.user.userId; // Use correct key
+  const updatedContact = await contactService.updateContact(req.params.id, req.body, userId);
+  if (!updatedContact) {
+    res.status(404);
+    throw new Error("Contact not found");
   }
+  res.status(200).json(updatedContact);
+});
 
-  return null;
-};
 
-// ---------------------------------------------------------------------
-/**
- * Get all contacts
- * @route GET /api/contacts
- * @returns {Object[]} contacts - List of all contacts.
- */
-const getAllContacts = async (req, res) => {
-  try {
-    const contacts = await Contact.find();
-    res.status(200).json(contacts);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+// Partially update a contact (PATCH) for the authenticated user
+const patchContact = asyncHandler(async (req, res) => {
+  const userId = req.user.userId; // Use correct key
+  const updatedContact = await contactService.patchContact(req.params.id, req.body, userId);
+  if (!updatedContact) {
+    res.status(404);
+    throw new Error("Contact not found");
   }
-};
+  res.status(200).json(updatedContact);
+});
 
-// ---------------------------------------------------------------------
-/**
- * Get a single contact by ID
- * @route GET /api/contacts/:id
- * @param {string} id - The ID of the contact to retrieve.
- * @returns {Object} contact - The contact object.
- */
-const getContactById = async (req, res) => {
-  try {
-    const contact = await Contact.findById(req.params.id);
-    if (!contact) {
-      return res.status(404).json({ message: 'Contact not found' });
-    }
-    res.status(200).json(contact);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+
+// Delete a contact for the authenticated user
+const deleteContact = asyncHandler(async (req, res) => {
+  const userId = req.user.userId; // Use correct key
+  const deletedContact = await contactService.deleteContact(req.params.id, userId);
+  if (!deletedContact) {
+    res.status(404);
+    throw new Error("Contact not found");
   }
-};
+  res.status(200).json({ message: "Contact deleted successfully" });
+});
 
-// ---------------------------------------------------------------------
-/**
- * Create a new contact
- * @route POST /api/contacts
- * @param {Object} body - The contact data to create.
- * @param {string} body.firstName - The first name of the contact.
- * @param {string} body.lastName - The last name of the contact.
- * @param {string} body.email - The email address of the contact.
- * @param {string} [body.favoriteColor] - The favorite color of the contact.
- * @param {Date} [body.birthday] - The birthday of the contact.
- * @returns {Object} contact - The newly created contact object.
- */
-const createContact = async (req, res) => {
-  const validationError = validateRequestBody(req, res, ['firstName', 'lastName', 'email']);
-  if (validationError) return validationError;
-
-  try {
-    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
-    const newContact = new Contact({ firstName, lastName, email, favoriteColor, birthday });
-    await newContact.save();
-    res.status(201).json(newContact);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-// ---------------------------------------------------------------------
-/**
- * Update a contact by ID
- * @route PUT /api/contacts/:id
- * @param {string} id - The ID of the contact to update.
- * @param {Object} body - The updated contact data.
- * @param {string} [body.firstName] - The updated first name of the contact.
- * @param {string} [body.lastName] - The updated last name of the contact.
- * @param {string} [body.email] - The updated email address of the contact.
- * @param {string} [body.favoriteColor] - The updated favorite color of the contact.
- * @param {Date} [body.birthday] - The updated birthday of the contact.
- * @returns {Object} contact - The updated contact object.
- */
-const updateContact = async (req, res) => {
-  const validationError = validateRequestBody(req, res);
-  if (validationError) return validationError;
-
-  try {
-    const { id } = req.params;
-    const updatedContact = await Contact.findByIdAndUpdate(id, req.body, { new: true });
-    if (!updatedContact) {
-      return res.status(404).json({ message: 'Contact not found' });
-    }
-    res.status(200).json(updatedContact);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-// ---------------------------------------------------------------------
-/**
- * Delete a contact by ID
- * @route DELETE /api/contacts/:id
- * @param {string} id - The ID of the contact to delete.
- * @returns {Object} message - A success message.
- */
-const deleteContact = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedContact = await Contact.findByIdAndDelete(id);
-    if (!deletedContact) {
-      return res.status(404).json({ message: 'Contact not found' });
-    }
-    res.status(200).json({ message: 'Contact deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// ---------------------------------------------------------------------
-/**
- * Partially update a contact by ID
- * @param {string} id - The ID of the contact to update
- * @param {Object} req.body - The fields to update
- * @returns {Object} The updated contact
- */
-const patchContact = async (req, res) => {
-  const validationError = validateRequestBody(req, res);
-  if (validationError) return validationError;
-
-  try {
-    const { id } = req.params;
-    const updates = req.body;
-
-    // Find the contact by ID and update only the provided fields
-    const updatedContact = await Contact.findByIdAndUpdate(id, updates, { new: true });
-
-    if (!updatedContact) {
-      return res.status(404).json({ message: 'Contact not found' });
-    }
-
-    res.status(200).json(updatedContact);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-// Export 
 module.exports = {
   getAllContacts,
   getContactById,
   createContact,
   updateContact,
-  deleteContact,
   patchContact,
+  deleteContact,
 };
