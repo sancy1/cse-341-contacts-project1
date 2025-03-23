@@ -8,15 +8,16 @@ GET /api/contacts/:id
 
 POST /api/contacts
 
-Using Swagger To Make Post Request
-http://localhost:3000/api-docs
-
 PUT /api/contacts/:id
 
 PATCH /api/contacts/id
 
 DELETE /api/contacts/:id
 
+
+Using Swagger To Make Post Request
+http://localhost:3000/api-docs
+https://contacts-api-ghz7.onrender.com/api-docs
 
 ---------
 USER APP:

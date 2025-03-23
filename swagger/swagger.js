@@ -28,8 +28,12 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:3000/api',
-        description: 'Development server',
+        url: process.env.NODE_ENV === "production" 
+          ? "https://contacts-api-ghz7.onrender.com" 
+          : "http://localhost:3000/api",
+        description: process.env.NODE_ENV === "production" 
+          ? "Production server" 
+          : "Development server",
       },
     ],
   },
