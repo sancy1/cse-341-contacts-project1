@@ -89,8 +89,8 @@ router.get("/", protect, getAllTasks);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Task'
- *       404:
- *         description: Task not found
+ *       500:
+ *         description: Internal Server Error
  */
 router.get("/:id", protect, getTaskById);
 
@@ -144,8 +144,8 @@ router.post("/", protect, taskValidationRules(), validate, createTask);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Task'
- *       404:
- *         description: Task not found
+ *       500:
+ *         description: Internal Server Error
  *       400:
  *         description: Invalid input
  */
@@ -184,8 +184,8 @@ router.put("/:id", protect, taskValidationRules(), validate, updateTask);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Task'
- *       404:
- *         description: Task not found
+ *       500:
+ *         description: Internal Server Error
  *       400:
  *         description: Invalid input
  */
@@ -206,8 +206,8 @@ router.patch("/:id", protect, patchTask);
  *     responses:
  *       200:
  *         description: Task deleted successfully
- *       404:
- *         description: Task not found
+ *       500:
+ *         description: Internal Server Error
  */
 router.delete("/:id", protect, deleteTask);
 

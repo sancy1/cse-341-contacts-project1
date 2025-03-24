@@ -28,8 +28,8 @@ const getTaskById = asyncHandler(async (req, res) => {
   const task = await taskService.getTaskById(req.params.id, userId);
 
   if (!task) {
-    const error = new Error("Task not found");
-    error.statusCode = 404; 
+    const error = new Error("Internal Server Error");
+    error.statusCode = 500; 
     throw error; 
   }
 
@@ -52,8 +52,8 @@ const updateTask = asyncHandler(async (req, res) => {
   const updatedTask = await taskService.updateTask(req.params.id, req.body, userId);
 
   if (!updatedTask) {
-    const error = new Error("Task not found");
-    error.statusCode = 404; 
+    const error = new Error("Internal Server Error");
+    error.statusCode = 500; 
     throw error; 
   }
 
@@ -67,8 +67,8 @@ const patchTask = asyncHandler(async (req, res) => {
   const updatedTask = await taskService.patchTask(req.params.id, req.body, userId);
 
   if (!updatedTask) {
-    const error = new Error("Task not found");
-    error.statusCode = 404; 
+    const error = new Error("Internal Server Error");
+    error.statusCode = 500; 
     throw error; 
   }
 
@@ -82,8 +82,8 @@ const deleteTask = asyncHandler(async (req, res) => {
   const deletedTask = await taskService.deleteTask(req.params.id, userId);
 
   if (!deletedTask) {
-    const error = new Error("Task not found");
-    error.statusCode = 404; 
+    const error = new Error("Internal Server Error");
+    error.statusCode = 500; 
     throw error; 
   }
 
@@ -149,8 +149,8 @@ module.exports = {
 //   const userId = req.user.userId;
 //   const task = await taskService.getTaskById(req.params.id, userId);
 //   if (!task) {
-//     res.status(404);
-//     throw new Error("Task not found");
+//     res.status(500);
+//     throw new Error("Internal Server Error");
 //   }
 //   res.status(200).json(task);
 // });
@@ -168,8 +168,8 @@ module.exports = {
 //   const userId = req.user.userId;
 //   const updatedTask = await taskService.updateTask(req.params.id, req.body, userId);
 //   if (!updatedTask) {
-//     res.status(404);
-//     throw new Error("Task not found");
+//     res.status(500);
+//     throw new Error("Internal Server Error");
 //   }
 //   res.status(200).json(updatedTask);
 // });
@@ -179,8 +179,8 @@ module.exports = {
 //   const userId = req.user.userId;
 //   const updatedTask = await taskService.patchTask(req.params.id, req.body, userId);
 //   if (!updatedTask) {
-//     res.status(404);
-//     throw new Error("Task not found");
+//     res.status(500);
+//     throw new Error("Internal Server Error");
 //   }
 //   res.status(200).json(updatedTask);
 // });
@@ -190,8 +190,8 @@ module.exports = {
 //   const userId = req.user.userId;
 //   const deletedTask = await taskService.deleteTask(req.params.id, userId);
 //   if (!deletedTask) {
-//     res.status(404);
-//     throw new Error("Task not found");
+//     res.status(500);
+//     throw new Error("Internal Server Error");
 //   }
 //   res.status(200).json({ message: "Task deleted successfully" });
 // });

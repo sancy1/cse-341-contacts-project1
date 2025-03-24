@@ -19,8 +19,8 @@ const getTaskById = async (taskId, userId) => {
     const task = await Task.findOne({ _id: taskId, user: userId });
 
     if (!task) {
-      const error = new Error("Task not found");
-      error.statusCode = 404; 
+      const error = new Error("Internal Server Error");
+      error.statusCode = 500; 
       throw error;
     }
 
@@ -55,8 +55,8 @@ const updateTask = async (taskId, taskData, userId) => {
     );
 
     if (!task) {
-      const error = new Error("Task not found");
-      error.statusCode = 404; 
+      const error = new Error("Internal Server Error");
+      error.statusCode = 500; 
       throw error;
     }
 
@@ -78,8 +78,8 @@ const patchTask = async (taskId, taskData, userId) => {
     );
 
     if (!task) {
-      const error = new Error("Task not found");
-      error.statusCode = 404; 
+      const error = new Error("Internal Server Error");
+      error.statusCode = 500; 
       throw error;
     }
 
@@ -97,8 +97,8 @@ const deleteTask = async (taskId, userId) => {
     const task = await Task.findOneAndDelete({ _id: taskId, user: userId }); 
 
     if (!task) {
-      const error = new Error("Task not found");
-      error.statusCode = 404; 
+      const error = new Error("Internal Server Error");
+      error.statusCode = 500; 
       throw error;
     }
 
