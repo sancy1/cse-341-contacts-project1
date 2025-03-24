@@ -2,6 +2,7 @@
  * Database Connection
  * Establishing a connection to MongoDB using Mongoose.
  */
+
 const mongoose = require("mongoose");
 require("dotenv").config();
 

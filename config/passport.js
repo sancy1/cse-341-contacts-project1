@@ -1,15 +1,15 @@
-// middlewares/passportConfig.js
+
 const passport = require('passport');
 const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const User = require('../models/User');
 require('dotenv').config();
 
-// Google OAuth2 Strategy
+// Google OAuth2 Strategy --------------------------------------------------------------
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID, // Ensure this is set in your .env file
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET, // Ensure this is set in your .env file
-    callbackURL: process.env.GOOGLE_CALLBACK_URL, // e.g., http://localhost:3000/api/users/auth/google/callback
+    clientID: process.env.GOOGLE_CLIENT_ID, 
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
+    callbackURL: process.env.GOOGLE_CALLBACK_URL, 
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         // Find an existing user by Google profile ID
@@ -27,20 +27,20 @@ passport.use(new GoogleStrategy({
             await user.save();
         }
 
-        // Return only the user object
-        done(null, user); // Corrected line
+        done(null, user); 
     } catch (error) {
         done(error, null);
     }
 }));
 
-// JWT Strategy
+
+// JWT Strategy --------------------------------------------------------------
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromExtractors([
         ExtractJwt.fromAuthHeaderAsBearerToken(),
         (req) => req.cookies.jwt,
     ]),
-    secretOrKey: process.env.JWT_SECRET, // Ensure this is set in your .env file
+    secretOrKey: process.env.JWT_SECRET, 
 }, async (jwtPayload, done) => {
     try {
         const user = await User.findById(jwtPayload.userId);
@@ -53,7 +53,7 @@ passport.use(new JwtStrategy({
     }
 }));
 
-// Optional: Serialize and Deserialize User (only needed if using sessions)
+
 passport.serializeUser((user, done) => {
     done(null, user._id);
 });
